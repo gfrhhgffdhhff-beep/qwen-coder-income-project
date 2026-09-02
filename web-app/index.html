@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qwen Code Generator - টাকা আয় করুন</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💰 Qwen Code Generator</h1>
+            <p>AI দিয়ে কোড তৈরি করুন এবং টাকা আয় করুন</p>
+        </header>
+
+        <main>
+            <!-- প্রধান বৈশিষ্ট্য -->
+            <section class="features">
+                <div class="feature-card">
+                    <h3>⚡ দ্রুত কোড জেনারেশন</h3>
+                    <p>সেকেন্ডে পেশাদার কোড তৈরি করুন</p>
+                    <button onclick="goToGenerator()">শুরু করুন</button>
+                </div>
+
+                <div class="feature-card">
+                    <h3>🔧 কোড অপটিমাইজেশন</h3>
+                    <p>আপনার কোড উন্নত করতে AI সাহায্য করুন</p>
+                    <button onclick="goToOptimizer()">অপটিমাইজ করুন</button>
+                </div>
+
+                <div class="feature-card">
+                    <h3>🐛 ডিবাগিং সহায়তা</h3>
+                    <p>ত্রুটিগুলি দ্রুত খুঁজে বের করুন এবং ঠিক করুন</p>
+                    <button onclick="goToDebugger()">ডিবাগ করুন</button>
+                </div>
+            </section>
+
+            <!-- কোড জেনারেটর ফর্ম -->
+            <section class="generator" id="generator" style="display:none;">
+                <h2>কোড জেনারেটর</h2>
+                <div class="form-group">
+                    <label>আপনি কি করতে চান? (বাংলায় বর্ণনা করুন)</label>
+                    <textarea id="prompt" placeholder="উদাহরণ: একটি লগইন ফর্ম তৈরি করুন যেখানে ইমেইল এবং পাসওয়ার্ড থাকবে"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>প্রোগ্রামিং ভাষা নির্বাচন করুন:</label>
+                    <select id="language">
+                        <option value="javascript">JavaScript</option>
+                        <option value="python">Python</option>
+                        <option value="java">Java</option>
+                        <option value="csharp">C#</option>
+                        <option value="php">PHP</option>
+                    </select>
+                </div>
+                <button onclick="generateCode()" class="btn-primary">কোড জেনারেট করুন</button>
+                <div id="result" style="display:none; margin-top: 20px;">
+                    <h3>জেনারেট করা কোড:</h3>
+                    <pre id="codeOutput"></pre>
+                    <button onclick="copyCode()" class="btn-secondary">কপি করুন</button>
+                </div>
+            </section>
+        </main>
+
+        <!-- মূল্য নির্ধারণ --
+        <section class="pricing">
+            <h2>মূল্য নির্ধারণ পরিকল্পনা</h2>
+            <div class="pricing-cards">
+                <div class="price-card">
+                    <h3>ফ্রি</h3>
+                    <p class="price">$0</p>
+                    <ul>
+                        <li>10 অনুরোধ/মাস</li>
+                        <li>মৌলিক সমর্থন</li>
+                    </ul>
+                    <button onclick="selectPlan('free')">শুরু করুন</button>
+                </div>
+
+                <div class="price-card featured">
+                    <h3>স্টার্টার</h3>
+                    <p class="price">$9.99</p>
+                    <ul>
+                        <li>100 অনুরোধ/মাস</li>
+                        <li>অগ্রাধিকার সমর্থন</li>
+                        <li>API অ্যাক্সেস</li>
+                    </ul>
+                    <button onclick="selectPlan('starter')">সাবস্ক্রাইব করুন</button>
+                </div>
+
+                <div class="price-card">
+                    <h3>পেশাদার</h3>
+                    <p class="price">$29.99</p>
+                    <ul>
+                        <li>1000 অনুরোধ/মাস</li>
+                        <li>২৪/৭ সমর্থন</li>
+                        <li>অগ্রাধিকার API</li>
+                    </ul>
+                    <button onclick="selectPlan('professional')">সাবস্ক্রাইব করুন</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

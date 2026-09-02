@@ -1,0 +1,32 @@
+{
+  "api": {
+    "port": 3000,
+    "host": "localhost",
+    "version": "v1"
+  },
+  "model": {
+    "name": "qwen2.5-coder",
+    "size": "3b",
+    "temperature": 0.7,
+    "max_tokens": 2048
+  },
+  "database": {
+    "type": "mongodb",
+    "uri": "mongodb://localhost:27017/qwen-coder"
+  },
+  "payment": {
+    "stripe_enabled": true,
+    "pricing": {
+      "free_tier": 0,
+      "starter": 9.99,
+      "professional": 29.99,
+      "enterprise": 99.99
+    }
+  },
+  "rate_limits": {
+    "free_tier": 10,
+    "starter": 100,
+    "professional": 1000,
+    "enterprise": "unlimited"
+  }
+}
