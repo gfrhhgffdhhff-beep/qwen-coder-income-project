@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Info Finder - ড্যাশবোর্ড</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            color: #667eea;
+            font-size: 2em;
+        }
+
+        .user-info {
+            text-align: right;
+        }
+
+        .user-info p {
+            color: #333;
+            margin: 5px 0;
+        }
+
+        .credits-display {
+            font-size: 1.5em;
+            color: #764ba2;
+            font-weight: bold;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .card p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s ease;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background: #764ba2;
+        }
+
+        .search-section {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .search-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .search-form {
+            display: grid;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: grid;
+            gap: 5px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .search-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+        }
+
+        .option-btn {
+            padding: 10px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .results {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .result-item {
+            background: #f9f9f9;
+            padding: 15px;
+            border-left: 4px solid #667eea;
+            margin-bottom: 15px;
+            border-radius: 3px;
+        }
+
+        .history {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .history h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            align-items: center;
+        }
+
+        .badge {
+            background: #667eea;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>🔍 Info Finder</h1>
+                <p style="color: #666;">অনলাইন তথ্য খোঁজার প্ল্যাটফর্ম</p>
+            </div>
+            <div class="user-info">
+                <p id="userName">ব্যবহারকারী</p>
+                <p id="userEmail">ইমেল</p>
+                <p class="credits-display">💳 <span id="creditsCount">0</span> ক্রেডিট</p>
+            </div>
+        </div>
+
+        <div class="main-grid">
+            <div class="card">
+                <h2>📊 দ্রুত পরিসংখ্যান</h2>
+                <p>মোট প্রশ্ন: <strong id="totalQueries">0</strong></p>
+                <p>খরচ করা: <strong id="totalSpent">$0</strong></p>
+                <p>বাকি বাজেট: <strong id="remaining">$0</strong></p>
+            </div>
+
+            <div class="card">
+                <h2>💳 ক্রেডিট কিনুন</h2>
+                <p>আরও তথ্য খুঁজতে ক্রেডিট প্যাকেজ কিনুন</p>
+                <button class="btn" onclick="showBuyModal()">ক্রেডিট কিনুন</button>
+            </div>
+
+            <div class="card">
+                <h2>📱 আমাদের অ্যাপ</h2>
+                <p>Telegram বা WhatsApp এ আমাদের সাথে যোগাযোগ করুন</p>
+                <button class="btn" onclick="openTelegram()">Telegram খুলুন</button>
+            </div>
+        </div>
+
+        <div class="search-section">
+            <h2>🔍 তথ্য খুঁজুন</h2>
+            <div class="search-form">
+                <div class="form-group">
+                    <label>কি খুঁজতে চান?</label>
+                    <div class="search-options">
+                        <button class="option-btn active" onclick="selectSearchType('personal')">👤 ব্যক্তি</button>
+                        <button class="option-btn" onclick="selectSearchType('business')">🏢 ব্যবসা</button>
+                        <button class="option-btn" onclick="selectSearchType('product')">🛍️ পণ্য</button>
+                        <button class="option-btn" onclick="selectSearchType('health')">⚕️ স্বাস্থ্য</button>
+                        <button class="option-btn" onclick="selectSearchType('travel')">✈️ ভ্রমণ</button>
+                        <button class="option-btn" onclick="selectSearchType('job')">💼 চাকরি</button>
+                        <button class="option-btn" onclick="selectSearchType('investment')">💰 বিনিয়োগ</button>
+                        <button class="option-btn" onclick="selectSearchType('local')">📍 স্থানীয়</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>আপনার প্রশ্ন</label>
+                    <input type="text" id="searchQuery" placeholder="যেমন: আব্দুল্লাহ খান, Google, iPhone 15 ইত্যাদি">
+                </div>
+
+                <button class="btn" onclick="performSearch()">🔍 খুঁজুন</button>
+            </div>
+        </div>
+
+        <div class="results" id="results">
+            <h2>📊 ফলাফল</h2>
+            <div id="resultsList"></div>
+        </div>
+
+        <div class="history">
+            <h2>📜 সাম্প্রতিক অনুসন্ধান</h2>
+            <div id="historyList">
+                <p style="color: #999;">কোনো অনুসন্ধান ইতিহাস নেই</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000/api/v1';
+        let currentSearchType = 'personal';
+        let userCredits = 0;
+        let userId = null;
+
+        // পৃষ্ঠা লোড হওয়ার সময়
+        window.addEventListener('DOMContentLoaded', () => {
+            loadUserData();
+        });
+
+        // ব্যবহারকারী ডেটা লোড করুন
+        async function loadUserData() {
+            userId = localStorage.getItem('userId');
+            if (!userId) {
+                // রেজিস্ট্রেশন ফর্ম দেখান
+                showRegistrationForm();
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/user/${userId}`);
+                const data = await response.json();
+
+                document.getElementById('userName').textContent = data.name;
+                document.getElementById('userEmail').textContent = data.email;
+                document.getElementById('creditsCount').textContent = data.credits;
+                document.getElementById('totalQueries').textContent = data.totalQueries;
+                userCredits = data.credits;
+
+                loadHistory();
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // রেজিস্ট্রেশন ফর্ম দেখান
+        function showRegistrationForm() {
+            const email = prompt('আপনার ইমেল দিন:');
+            if (!email) return;
+
+            const name = prompt('আপনার নাম দিন:');
+            if (!name) return;
+
+            fetch(`${API_URL}/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password: 'password123', name })
+            })
+            .then(r => r.json())
+            .then(data => {
+                localStorage.setItem('userId', data.userId);
+                location.reload();
+            })
+            .catch(e => alert('রেজিস্ট্রেশন ব্যর্থ: ' + e.message));
+        }
+
+        // সার্চ ধরন নির্বাচন করুন
+        function selectSearchType(type) {
+            currentSearchType = type;
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        // সার্চ সম্পাদন করুন
+        async function performSearch() {
+            const query = document.getElementById('searchQuery').value;
+            if (!query) {
+                alert('কিছু লিখুন প্লিজ!');
+                return;
+            }
+
+            document.getElementById('results').innerHTML = '<p>খুঁজছি...</p>';
+            document.getElementById('results').classList.add('show');
+
+            try {
+                const endpoints = {
+                    personal: `${API_URL}/find-personal-info`,
+                    business: `${API_URL}/find-business-info`,
+                    product: `${API_URL}/find-product-info`,
+                    health: `${API_URL}/find-health-info`,
+                    travel: `${API_URL}/find-travel-info`,
+                    job: `${API_URL}/find-job-info`,
+                    investment: `${API_URL}/find-investment-info`,
+                    local: `${API_URL}/find-local-info`
+                };
+
+                const requestData = {
+                    userId: userId,
+                    [currentSearchType === 'personal' ? 'name' : 
+                     currentSearchType === 'business' ? 'company' :
+                     currentSearchType === 'product' ? 'productName' :
+                     currentSearchType === 'health' ? 'disease' :
+                     currentSearchType === 'travel' ? 'destination' :
+                     currentSearchType === 'job' ? 'jobTitle' :
+                     currentSearchType === 'investment' ? 'asset' : 'query']: query
+                };
+
+                const response = await fetch(endpoints[currentSearchType], {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(requestData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    userCredits = result.creditsRemaining;
+                    document.getElementById('creditsCount').textContent = userCredits;
+
+                    const resultHTML = `
+                        <div class="result-item">
+                            <h3>✅ ফলাফল পাওয়া গেছে</h3>
+                            <p><strong>অনুসন্ধান:</strong> ${query}</p>
+                            <p><strong>খরচ:</strong> ${result.creditUsed} ক্রেডিট</p>
+                            <pre>${JSON.stringify(result.data, null, 2).substring(0, 1000)}</pre>
+                        </div>
+                    `;
+                    document.getElementById('resultsList').innerHTML = resultHTML;
+                } else {
+                    alert('❌ ' + result.error);
+                }
+            } catch (error) {
+                alert('সার্চ ব্যর্থ: ' + error.message);
+            }
+        }
+
+        // ক্রেডিট কেনার মডাল
+        function showBuyModal() {
+            const pkg = prompt('প্যাকেজ বেছে নিন:\n1. Basic ($5) - 100 ক্রেডিট\n2. Standard ($15) - 500 ক্রেডিট\n3. Premium ($50) - 2000 ক্রেডিট\n4. Enterprise ($200) - 10000 ক্রেডিট\n\n(1-4 এর মধ্যে একটি নম্বর দিন)');
+            
+            const packages = { 1: 'basic', 2: 'standard', 3: 'premium', 4: 'enterprise' };
+            if (!packages[pkg]) return;
+
+            fetch(`${API_URL}/buy-credits`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, package: packages[pkg] })
+            })
+            .then(r => r.json())
+            .then(data => {
+                alert('✅ ক্রেডিট কেনা সফল!\nনতুন ক্রেডিট: ' + data.totalCredits);
+                userCredits = data.totalCredits;
+                document.getElementById('creditsCount').textContent = userCredits;
+            })
+            .catch(e => alert('❌ পেমেন্ট ব্যর্থ: ' + e.message));
+        }
+
+        // ইতিহাস লোড করুন
+        async function loadHistory() {
+            try {
+                const response = await fetch(`${API_URL}/user/${userId}/history`);
+                const data = await response.json();
+
+                if (data.queries.length === 0) return;
+
+                const historyHTML = data.queries.map(q => `
+                    <div class="history-item">
+                        <div>
+                            <strong>${q.type}</strong><br>
+                            <small>${q.query}</small>
+                        </div>
+                        <div>
+                            <span class="badge">${q.costCredits} ক্রেডিট</span>
+                        </div>
+                    </div>
+                `).join('');
+
+                document.getElementById('historyList').innerHTML = historyHTML;
+            } catch (error) {
+                console.error('Error loading history:', error);
+            }
+        }
+
+        // Telegram খুলুন
+        function openTelegram() {
+            window.open('https://t.me/InfoFinderBot', '_blank');
+        }
+    </script>
+</body>
+</html>
